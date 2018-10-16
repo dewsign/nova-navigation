@@ -1,0 +1,5 @@
+<?php
+
+/**
+ * Navigation Routes
+ */
