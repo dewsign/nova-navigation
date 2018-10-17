@@ -3,8 +3,6 @@ namespace Dewsign\NovaNavigation\Nova;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool as NovaTool;
-use Dewsign\NovaNavigation\Nova\MainNavigation;
-use Dewsign\NovaNavigation\Nova\FooterNavigation;
 
 class NovaNavigationTool extends NovaTool
 {
@@ -15,9 +13,6 @@ class NovaNavigationTool extends NovaTool
      */
     public function boot()
     {
-        Nova::resources([
-            MainNavigation::class,
-            FooterNavigation::class,
-        ]);
+        Nova::resources([]);
     }
 }

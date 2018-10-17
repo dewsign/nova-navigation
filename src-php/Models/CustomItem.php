@@ -2,12 +2,14 @@
 
 namespace Dewsign\NovaNavigation\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Dewsign\NovaRepeaterBlocks\Traits\IsRepeaterBlock;
+use Illuminate\Support\Facades\View;
 
-class CustomItem extends Model
+class CustomItem extends NavigationItem
 {
-    use IsRepeaterBlock;
+    public static $viewTemplate = 'nova-navigation::custom';
 
-    public static $repeaterBlockViewTemplate = 'nova-navigation::custom';
+    public function resolveAction()
+    {
+        return $this->url;
+    }
 }
