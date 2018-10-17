@@ -7,28 +7,17 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\MorphMany;
-use Naxon\NovaFieldSortable\Sortable;
-use Benjaminhirsch\NovaSlugField\Slug;
-use Laravel\Nova\Fields\BelongsToMany;
-use Dewsign\NovaNavigation\Nova\CustomItem;
+use Silvanite\NovaFieldHidden\Hidden;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Benjaminhirsch\NovaSlugField\TextWithSlug;
 use Dewsign\NovaRepeaterBlocks\Fields\Repeater;
+use Dewsign\NovaNavigation\Nova\Items\CustomItem;
 use Dewsign\NovaRepeaterBlocks\Fields\Polymorphic;
-use Maxfactor\Support\Webpage\Nova\MetaAttributes;
-use Naxon\NovaFieldSortable\Concerns\SortsIndexEntries;
-use Silvanite\NovaFieldCloudinary\Fields\CloudinaryImage;
 
 class Navigation extends Repeater
 {
-    public static $morphTo = [
-        'Dewsign\NovaNavigation\Nova\Navigation',
-    ];
-
-    public static $title = 'title';
+    public static $title = 'label';
 
     public static $defaultSortField = 'sort_order';
 
@@ -36,11 +25,6 @@ class Navigation extends Repeater
 
     public static $zone = 'global';
 
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
     public static $model = 'Dewsign\NovaNavigation\Models\Navigation';
 
     public static $group = 'Navigation';
@@ -61,15 +45,13 @@ class Navigation extends Repeater
         return [
             ID::make()->sortable(),
             Boolean::make('Active')->sortable()->rules('required', 'boolean'),
-            MorphTo::make('Parent', 'repeatable')->types(array_wrap(static::$morphTo))->onlyOnDetail(),
-            Text::make('Title')->sortable()->rules('required'),
-            Text::make('Zone')->sortable()->rules('required')->withMeta([
-                'value' => static::$zone,
-                'hidden' => true,
-            ])->onlyOnForms()->hideWhenUpdating(),
-            Polymorphic::make('Type')->types($request, [
-                CustomItem::class,
-            ]),
+            MorphTo::make('Parent', 'repeatable')->types(array_wrap(static::class))->onlyOnDetail(),
+            Text::make('Title')->sortable()->rules('nullable', 'max:254')->hideFromIndex(),
+            Text::make('Label', function() {
+                return $this->label;
+            }),
+            Hidden::make('Zone')->value(static::$zone),
+            Polymorphic::make('Type')->types($request, $this->types($request)),
             MorphMany::make(__('Items'), 'navigations', static::class),
         ];
     }
@@ -82,7 +64,7 @@ class Navigation extends Repeater
         }
 
         return array_merge([
-            Navigation::class,
+            CustomItem::class,
         ], config('novanavigation.repeaters'));
     }
 
