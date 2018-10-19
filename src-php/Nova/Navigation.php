@@ -73,6 +73,7 @@ class Navigation extends Repeater
 
     public static function indexQuery(NovaRequest $request, $query)
     {
+        parent::indexQuery($request, $query);
 
         if (static::getResourceIdFromRequest($request)) {
             return $query;
