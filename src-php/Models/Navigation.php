@@ -16,9 +16,7 @@ class Navigation extends Model implements Sortable
 
     public function navigations()
     {
-        return $this->morphMany(Navigation::class, 'repeatable')
-            ->ordered()
-            ->with('type');
+        return $this->morphMany(Navigation::class, 'repeatable')->with('type');
     }
 
     public function repeatable()

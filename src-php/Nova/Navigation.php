@@ -10,6 +10,8 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\MorphMany;
 use Silvanite\NovaFieldHidden\Hidden;
+use Dewsign\NovaFieldSortable\IsSorted;
+use Dewsign\NovaFieldSortable\Sortable;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Dewsign\NovaRepeaterBlocks\Fields\Repeater;
 use Dewsign\NovaNavigation\Nova\Items\CustomItem;
@@ -17,9 +19,9 @@ use Dewsign\NovaRepeaterBlocks\Fields\Polymorphic;
 
 class Navigation extends Repeater
 {
-    public static $title = 'label';
+    use IsSorted;
 
-    public static $defaultSortField = 'sort_order';
+    public static $title = 'label';
 
     public static $displayInNavigation = true;
 
@@ -43,10 +45,11 @@ class Navigation extends Repeater
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
-            Boolean::make('Active')->sortable()->rules('required', 'boolean'),
+            Sortable::make('Sort', 'id'),
+            ID::make(),
+            Boolean::make('Active')->rules('required', 'boolean'),
             MorphTo::make('Parent', 'repeatable')->types(array_wrap(static::class))->onlyOnDetail(),
-            Text::make('Title')->sortable()->rules('nullable', 'max:254')->hideFromIndex(),
+            Text::make('Title')->rules('nullable', 'max:254')->hideFromIndex(),
             Text::make('Label', function() {
                 return $this->label;
             }),
