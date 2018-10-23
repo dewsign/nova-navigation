@@ -31,6 +31,11 @@ class Navigation extends Repeater
 
     public static $group = 'Navigation';
 
+    public static $search = [
+        'title',
+        'zone',
+    ];
+
     public static function label()
     {
         return __('Navigation');
