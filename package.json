@@ -1,6 +1,6 @@
 {
     "name": "@dewsign/nova-navigation",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "Navigation/Menu manager for Laravel Nova",
     "main": "dist-js/index.js",
     "scripts": {
