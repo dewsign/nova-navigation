@@ -56,6 +56,21 @@ You can access any sub-items through the `navigations` relationship.
 @endforeach
 ```
 
+## Hyperlinks Repeater Blocks
+
+Sometime you may want to include a repeater block which acts like other navigation zones to add inline links. Add the included `NrbHyperlinks` for your repeater blocks.
+
+```php
+    // config/repeater-blocks
+    ...
+    "repeaters" => [
+        ...
+        Dewsign\NovaNavigation\Nova\NrbHyperlinks::class,
+    ],
+```
+
+This will render each navigation items using their respective views. The wrapper for the items can be customised by creating new templates in the `views/vendor/nova-navigation/hyperlinks` directory. You can publish and modify the default if required.
+
 ## Extending
 
 You can create your own navigation item types by creating a couple of new files and loading them in. In short, you will need:
