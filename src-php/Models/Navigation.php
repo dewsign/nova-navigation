@@ -16,6 +16,10 @@ class Navigation extends Model implements Sortable
     use HasRepeaterBlocks;
     use ResolvesRepeaterTypes;
 
+    protected $with = [
+        'navigations',
+    ];
+
     public function navigations()
     {
         return $this->morphMany(Navigation::class, 'repeatable')->with('type');
