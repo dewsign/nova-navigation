@@ -2,9 +2,9 @@
 
 namespace Dewsign\NovaNavigation\Providers;
 
-use Laravel\Nova\Nova;
 use Illuminate\Routing\Router;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Dewsign\NovaNavigation\Models\CustomItem;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -27,6 +27,7 @@ class PackageServiceProvider extends ServiceProvider
         $this->registerMorphMaps();
         $this->configurePagination();
         $this->loadTranslations();
+        $this->registerBladeExtensions();
     }
 
     /**
@@ -163,5 +164,12 @@ class PackageServiceProvider extends ServiceProvider
     private function loadTranslations()
     {
         $this->loadJSONTranslationsFrom(__DIR__.'/../Resources/lang', 'novanavigation');
+    }
+
+    public function registerBladeExtensions()
+    {
+        Blade::directive('novaNavigation', function ($expression = []) {
+            return "<?php echo \Dewsign\NovaNavigation\Support\RenderEngine::renderNavigation({$expression}); ?>";
+        });
     }
 }
