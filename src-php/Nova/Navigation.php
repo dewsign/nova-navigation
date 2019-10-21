@@ -4,6 +4,7 @@ namespace Dewsign\NovaNavigation\Nova;
 
 use Laravel\Nova\Resource;
 use Laravel\Nova\Fields\ID;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Boolean;
@@ -53,7 +54,7 @@ class Navigation extends Repeater
             Sortable::make('Sort', 'id'),
             ID::make(),
             Boolean::make('Active')->rules('required', 'boolean'),
-            MorphTo::make('Parent', 'repeatable')->types(array_wrap(static::class))->onlyOnDetail(),
+            MorphTo::make('Parent', 'repeatable')->types(Arr::wrap(static::class))->onlyOnDetail(),
             Text::make('Title')->rules('nullable', 'max:254')->hideFromIndex(),
             Text::make('Label', function() {
                 return $this->label;
@@ -103,7 +104,7 @@ class Navigation extends Repeater
 
         parse_str(parse_url($request->server->get('HTTP_REFERER'), PHP_URL_QUERY), $params);
 
-        if ($resourceId = array_get($params, 'viaResourceId')) {
+        if ($resourceId = Arr::get($params, 'viaResourceId')) {
             return $resourceId;
         };
 
