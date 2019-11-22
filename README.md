@@ -79,6 +79,18 @@ If you don't want to render the navigation item's default view, you can manually
 <a href="{{ $navigationItem->action }}">{{ $navigationItem->label }}</a>
 ```
 
+## Link Types
+
+The packages attempts to determine the type of link entered and returns this on the item through the `linkType` attribute. You can access this within the `view` using `$item->linkType`. This can be useful for adding icons to links for example.
+
+| Type | Description |
+| ---- | ----------- |
+| mailto | An email link |
+| tel | A telephone link |
+| download | A link pointing to a download. You can customise the file extensions which are treated as downloads in the config.  |
+| external | A link pointing off-site |
+| internal | A link pointing to a URL within your site |
+
 ## Extending
 
 You can create your own navigation item types by creating a couple of new files and loading them in. This is useful for making your content types available as selectable navigation items instead of manually typing in custom URLs. As an example, if you have a Blog and want the user to be able to select an article or category to link to.
